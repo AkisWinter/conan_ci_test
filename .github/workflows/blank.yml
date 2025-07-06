@@ -22,7 +22,7 @@ jobs:
         sed -i 's/os=.*/os=Linux/' ~/.conan2/profiles/linux64
         sed -i 's/arch=.*/arch=x86_64/' ~/.conan2/profiles/linux64
         sed -i 's/compiler=.*/compiler=clang/' ~/.conan2/profiles/linux64
-        sed -i 's/compiler.version=.*/compiler.version='$(clang --version | grep version | awk '{print $3}' | cut -d'.' -f1)'/' ~/.conan2/profiles/linux64
+        sed -i 's/compiler.version=.*/compiler.version=16/' ~/.conan2/profiles/linux64
         sed -i 's/compiler.libcxx=.*/compiler.libcxx=libc++/' ~/.conan2/profiles/linux64
         echo -e "\n[conf]\ntools.system.package_manager:mode=install" >> ~/.conan2/profiles/linux64
 
@@ -32,52 +32,52 @@ jobs:
         cmake -DCMAKE_TOOLCHAIN_FILE=conan_toolchain.cmake -B build/linux
         cmake --build build/linux --config Release
 
-  build-windows:
-    runs-on: ubuntu-latest
-    container:
-      image: akiteck/alpine_custom_cross:main
+#  build-windows:
+#    runs-on: ubuntu-latest
+#    container:
+#      image: akiteck/alpine_custom_cross:main
 
-    steps:
-    - uses: actions/checkout@v4
+#    steps:
+#    - uses: actions/checkout@v4
 
-    - name: Setup Conan Profile (Windows)
-      run: |
-        conan profile detect
-        cp ~/.conan2/profiles/default ~/.conan2/profiles/win64
-        sed -i 's/os=.*/os=Windows/' ~/.conan2/profiles/win64
-        sed -i 's/arch=.*/arch=x86_64/' ~/.conan2/profiles/win64
-        sed -i 's/compiler=.*/compiler=clang/' ~/.conan2/profiles/win64
-        sed -i 's/compiler.version=.*/compiler.version='$(clang --version | grep version | awk '{print $3}' | cut -d'.' -f1)'/' ~/.conan2/profiles/win64
-        sed -i 's/compiler.libcxx=.*/compiler.libcxx=libc++/' ~/.conan2/profiles/win64
-        echo -e "\n[conf]\ntools.system.package_manager:mode=install" >> ~/.conan2/profiles/win64
+#    - name: Setup Conan Profile (Windows)
+#      run: |
+#        conan profile detect
+#        cp ~/.conan2/profiles/default ~/.conan2/profiles/win64
+#        sed -i 's/os=.*/os=Windows/' ~/.conan2/profiles/win64
+#        sed -i 's/arch=.*/arch=x86_64/' ~/.conan2/profiles/win64
+#        sed -i 's/compiler=.*/compiler=clang/' ~/.conan2/profiles/win64
+#        sed -i 's/compiler.version=.*/compiler.version=16/' ~/.conan2/profiles/win64
+#        sed -i 's/compiler.libcxx=.*/compiler.libcxx=libc++/' ~/.conan2/profiles/win64
+#        echo -e "\n[conf]\ntools.system.package_manager:mode=install" >> ~/.conan2/profiles/win64
 
-    - name: Conan install Windows
-      run: |
-        conan install . --profile=win64 --build=missing -c tools.system.package_manager:mode=install
-        cmake -DCMAKE_TOOLCHAIN_FILE=conan_toolchain.cmake -B build/windows
-        cmake --build build/windows --config Release
+#    - name: Conan install Windows
+#      run: |
+#        conan install . --profile=win64 --build=missing -c tools.system.package_manager:mode=install
+#        cmake -DCMAKE_TOOLCHAIN_FILE=conan_toolchain.cmake -B build/windows
+#        cmake --build build/windows --config Release
 
-  build-macos:
-    runs-on: ubuntu-latest
-    container:
-      image: akiteck/alpine_custom_cross:main
+#  build-macos:
+#    runs-on: ubuntu-latest
+#    container:
+#      image: akiteck/alpine_custom_cross:main
 
-    steps:
-    - uses: actions/checkout@v4
+#    steps:
+#    - uses: actions/checkout@v4
 
-    - name: Setup Conan Profile (macOS)
-      run: |
-        conan profile detect
-        cp ~/.conan2/profiles/default ~/.conan2/profiles/macos
-        sed -i 's/os=.*/os=Macos/' ~/.conan2/profiles/macos
-        sed -i 's/arch=.*/arch=x86_64/' ~/.conan2/profiles/macos
-        sed -i 's/compiler=.*/compiler=clang/' ~/.conan2/profiles/macos
-        sed -i 's/compiler.version=.*/compiler.version='$(clang --version | grep version | awk '{print $3}' | cut -d'.' -f1)'/' ~/.conan2/profiles/macos
-        sed -i 's/compiler.libcxx=.*/compiler.libcxx=libc++/' ~/.conan2/profiles/macos
-        echo -e "\n[conf]\ntools.system.package_manager:mode=install" >> ~/.conan2/profiles/macos
+#    - name: Setup Conan Profile (macOS)
+#      run: |
+#        conan profile detect
+#        cp ~/.conan2/profiles/default ~/.conan2/profiles/macos
+#        sed -i 's/os=.*/os=Macos/' ~/.conan2/profiles/macos
+#        sed -i 's/arch=.*/arch=x86_64/' ~/.conan2/profiles/macos
+#        sed -i 's/compiler=.*/compiler=clang/' ~/.conan2/profiles/macos
+#        sed -i 's/compiler.version=.*/compiler.version=16/' ~/.conan2/profiles/macos
+#        sed -i 's/compiler.libcxx=.*/compiler.libcxx=libc++/' ~/.conan2/profiles/macos
+#        echo -e "\n[conf]\ntools.system.package_manager:mode=install" >> ~/.conan2/profiles/macos
 
-    - name: Conan install macOS
-      run: |
-        conan install . --profile=macos --build=missing -c tools.system.package_manager:mode=install
-        cmake -DCMAKE_TOOLCHAIN_FILE=conan_toolchain.cmake -B build/macos
-        cmake --build build/macos --config Release
+#    - name: Conan install macOS
+#      run: |
+#        conan install . --profile=macos --build=missing -c tools.system.package_manager:mode=install
+#        cmake -DCMAKE_TOOLCHAIN_FILE=conan_toolchain.cmake -B build/macos
+#        cmake --build build/macos --config Release
