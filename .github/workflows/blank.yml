@@ -17,6 +17,8 @@ jobs:
 
     - name: Setup Conan Profile (Linux)
       run: |
+        export CC=clang
+        export CXX=clang++
         conan profile detect
         cp ~/.conan2/profiles/default ~/.conan2/profiles/linux64
         sed -i 's/os=.*/os=Linux/' ~/.conan2/profiles/linux64
@@ -34,7 +36,6 @@ jobs:
         cmake -DCMAKE_TOOLCHAIN_FILE=conan_toolchain.cmake -B build/linux
         cmake --build build/linux --config Release
 
-
 #  build-windows:
 #    runs-on: ubuntu-latest
 #    container:
@@ -45,6 +46,8 @@ jobs:
 
 #    - name: Setup Conan Profile (Windows)
 #      run: |
+#        export CC=clang
+#        export CXX=clang++
 #        conan profile detect
 #        cp ~/.conan2/profiles/default ~/.conan2/profiles/win64
 #        sed -i 's/os=.*/os=Windows/' ~/.conan2/profiles/win64
@@ -56,6 +59,8 @@ jobs:
 
 #    - name: Conan install Windows
 #      run: |
+#        export CC=clang
+#        export CXX=clang++
 #        conan install . --profile=win64 --build=missing -c tools.system.package_manager:mode=install
 #        cmake -DCMAKE_TOOLCHAIN_FILE=conan_toolchain.cmake -B build/windows
 #        cmake --build build/windows --config Release
@@ -70,6 +75,8 @@ jobs:
 
 #    - name: Setup Conan Profile (macOS)
 #      run: |
+#        export CC=clang
+#        export CXX=clang++
 #        conan profile detect
 #        cp ~/.conan2/profiles/default ~/.conan2/profiles/macos
 #        sed -i 's/os=.*/os=Macos/' ~/.conan2/profiles/macos
@@ -81,6 +88,8 @@ jobs:
 
 #    - name: Conan install macOS
 #      run: |
+#        export CC=clang
+#        export CXX=clang++
 #        conan install . --profile=macos --build=missing -c tools.system.package_manager:mode=install
 #        cmake -DCMAKE_TOOLCHAIN_FILE=conan_toolchain.cmake -B build/macos
 #        cmake --build build/macos --config Release
