@@ -1,0 +1,49 @@
+name: Conan Cross-Compile
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  build-linux:
+    runs-on: ubuntu-latest
+    container:
+      image: akiteck/alpine_custom_cross:main
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Conan install Linux
+      run: |
+        conan install . --profile=linux64 --build=missing
+        cmake -DCMAKE_TOOLCHAIN_FILE=conan_toolchain.cmake -B build/linux
+        cmake --build build/linux --config Release
+
+  build-windows:
+    runs-on: ubuntu-latest
+    container:
+      image: akiteck/alpine_custom_cross:main
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Conan install Windows
+      run: |
+        conan install . --profile=win64 --build=missing
+        cmake -DCMAKE_TOOLCHAIN_FILE=conan_toolchain.cmake -B build/windows
+        cmake --build build/windows --config Release
+
+  build-macos:
+    runs-on: ubuntu-latest
+    container:
+      image: akiteck/alpine_custom_cross:main
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Conan install macOS
+      run: |
+        conan install . --profile=macos --build=missing
+        cmake -DCMAKE_TOOLCHAIN_FILE=conan_toolchain.cmake -B build/macos
+        cmake --build build/macos --config Release
