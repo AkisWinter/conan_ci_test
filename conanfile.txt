@@ -1,0 +1,14 @@
+[requires]
+boost/1.88.0
+openssl/3.5.1
+opencv/4.11.0
+b2/5.2.0
+
+[generators]
+CMakeToolchain
+CMakeDeps
+
+[options]
+boost/*:shared=True
+openssl/*:shared=True
+opencv/*:shared=True
