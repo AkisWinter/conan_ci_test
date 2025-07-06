@@ -15,6 +15,16 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
+    - name: Setup Conan Profile (Linux)
+      run: |
+        conan profile detect
+        cp ~/.conan2/profiles/default ~/.conan2/profiles/linux64
+        sed -i 's/os=.*/os=Linux/' ~/.conan2/profiles/linux64
+        sed -i 's/arch=.*/arch=x86_64/' ~/.conan2/profiles/linux64
+        sed -i 's/compiler=.*/compiler=gcc/' ~/.conan2/profiles/linux64
+        sed -i 's/compiler.version=.*/compiler.version='$(gcc -dumpversion | cut -d. -f1)'/' ~/.conan2/profiles/linux64
+        sed -i 's/compiler.libcxx=.*/compiler.libcxx=libstdc++11/' ~/.conan2/profiles/linux64
+
     - name: Conan install Linux
       run: |
         conan install . --profile=linux64 --build=missing
@@ -25,8 +35,19 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: akiteck/alpine_custom_cross:main
+
     steps:
     - uses: actions/checkout@v4
+
+    - name: Setup Conan Profile (Windows)
+      run: |
+        conan profile detect
+        cp ~/.conan2/profiles/default ~/.conan2/profiles/win64
+        sed -i 's/os=.*/os=Windows/' ~/.conan2/profiles/win64
+        sed -i 's/arch=.*/arch=x86_64/' ~/.conan2/profiles/win64
+        sed -i 's/compiler=.*/compiler=gcc/' ~/.conan2/profiles/win64
+        sed -i 's/compiler.version=.*/compiler.version='$(x86_64-w64-mingw32-gcc -dumpversion | cut -d. -f1)'/' ~/.conan2/profiles/win64
+        sed -i 's/compiler.libcxx=.*/compiler.libcxx=libstdc++11/' ~/.conan2/profiles/win64
 
     - name: Conan install Windows
       run: |
@@ -41,6 +62,16 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
+
+    - name: Setup Conan Profile (macOS)
+      run: |
+        conan profile detect
+        cp ~/.conan2/profiles/default ~/.conan2/profiles/macos
+        sed -i 's/os=.*/os=Macos/' ~/.conan2/profiles/macos
+        sed -i 's/arch=.*/arch=x86_64/' ~/.conan2/profiles/macos
+        sed -i 's/compiler=.*/compiler=clang/' ~/.conan2/profiles/macos
+        sed -i 's/compiler.version=.*/compiler.version='$(clang --version | grep version | awk '{print $3}' | cut -d'.' -f1)'/' ~/.conan2/profiles/macos
+        sed -i 's/compiler.libcxx=.*/compiler.libcxx=libc++/' ~/.conan2/profiles/macos
 
     - name: Conan install macOS
       run: |
