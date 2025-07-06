@@ -21,9 +21,9 @@ jobs:
         cp ~/.conan2/profiles/default ~/.conan2/profiles/linux64
         sed -i 's/os=.*/os=Linux/' ~/.conan2/profiles/linux64
         sed -i 's/arch=.*/arch=x86_64/' ~/.conan2/profiles/linux64
-        sed -i 's/compiler=.*/compiler=gcc/' ~/.conan2/profiles/linux64
-        sed -i 's/compiler.version=.*/compiler.version='$(gcc -dumpversion | cut -d. -f1)'/' ~/.conan2/profiles/linux64
-        sed -i 's/compiler.libcxx=.*/compiler.libcxx=libstdc++11/' ~/.conan2/profiles/linux64
+        sed -i 's/compiler=.*/compiler=clang/' ~/.conan2/profiles/linux64
+        sed -i 's/compiler.version=.*/compiler.version='$(clang --version | grep version | awk '{print $3}' | cut -d'.' -f1)'/' ~/.conan2/profiles/linux64
+        sed -i 's/compiler.libcxx=.*/compiler.libcxx=libc++/' ~/.conan2/profiles/linux64
         echo -e "\n[conf]\ntools.system.package_manager:mode=install" >> ~/.conan2/profiles/linux64
 
     - name: Conan install Linux
@@ -46,9 +46,9 @@ jobs:
         cp ~/.conan2/profiles/default ~/.conan2/profiles/win64
         sed -i 's/os=.*/os=Windows/' ~/.conan2/profiles/win64
         sed -i 's/arch=.*/arch=x86_64/' ~/.conan2/profiles/win64
-        sed -i 's/compiler=.*/compiler=gcc/' ~/.conan2/profiles/win64
-        sed -i 's/compiler.version=.*/compiler.version='$(x86_64-w64-mingw32-gcc -dumpversion | cut -d. -f1)'/' ~/.conan2/profiles/win64
-        sed -i 's/compiler.libcxx=.*/compiler.libcxx=libstdc++11/' ~/.conan2/profiles/win64
+        sed -i 's/compiler=.*/compiler=clang/' ~/.conan2/profiles/win64
+        sed -i 's/compiler.version=.*/compiler.version='$(clang --version | grep version | awk '{print $3}' | cut -d'.' -f1)'/' ~/.conan2/profiles/win64
+        sed -i 's/compiler.libcxx=.*/compiler.libcxx=libc++/' ~/.conan2/profiles/win64
         echo -e "\n[conf]\ntools.system.package_manager:mode=install" >> ~/.conan2/profiles/win64
 
     - name: Conan install Windows
