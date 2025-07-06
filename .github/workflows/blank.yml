@@ -24,11 +24,10 @@ jobs:
         sed -i 's/compiler=.*/compiler=gcc/' ~/.conan2/profiles/linux64
         sed -i 's/compiler.version=.*/compiler.version='$(gcc -dumpversion | cut -d. -f1)'/' ~/.conan2/profiles/linux64
         sed -i 's/compiler.libcxx=.*/compiler.libcxx=libstdc++11/' ~/.conan2/profiles/linux64
+        echo -e "\n[conf]\ntools.system.package_manager:mode=install" >> ~/.conan2/profiles/linux64
 
     - name: Conan install Linux
       run: |
-        - name: Conan install Linux
-  run: |
         conan install . --profile=linux64 --build=missing -c tools.system.package_manager:mode=install
         cmake -DCMAKE_TOOLCHAIN_FILE=conan_toolchain.cmake -B build/linux
         cmake --build build/linux --config Release
@@ -50,10 +49,11 @@ jobs:
         sed -i 's/compiler=.*/compiler=gcc/' ~/.conan2/profiles/win64
         sed -i 's/compiler.version=.*/compiler.version='$(x86_64-w64-mingw32-gcc -dumpversion | cut -d. -f1)'/' ~/.conan2/profiles/win64
         sed -i 's/compiler.libcxx=.*/compiler.libcxx=libstdc++11/' ~/.conan2/profiles/win64
+        echo -e "\n[conf]\ntools.system.package_manager:mode=install" >> ~/.conan2/profiles/win64
 
     - name: Conan install Windows
       run: |
-        conan install . --profile=win64 --build=missing
+        conan install . --profile=win64 --build=missing -c tools.system.package_manager:mode=install
         cmake -DCMAKE_TOOLCHAIN_FILE=conan_toolchain.cmake -B build/windows
         cmake --build build/windows --config Release
 
@@ -74,9 +74,10 @@ jobs:
         sed -i 's/compiler=.*/compiler=clang/' ~/.conan2/profiles/macos
         sed -i 's/compiler.version=.*/compiler.version='$(clang --version | grep version | awk '{print $3}' | cut -d'.' -f1)'/' ~/.conan2/profiles/macos
         sed -i 's/compiler.libcxx=.*/compiler.libcxx=libc++/' ~/.conan2/profiles/macos
+        echo -e "\n[conf]\ntools.system.package_manager:mode=install" >> ~/.conan2/profiles/macos
 
     - name: Conan install macOS
       run: |
-        conan install . --profile=macos --build=missing
+        conan install . --profile=macos --build=missing -c tools.system.package_manager:mode=install
         cmake -DCMAKE_TOOLCHAIN_FILE=conan_toolchain.cmake -B build/macos
         cmake --build build/macos --config Release
