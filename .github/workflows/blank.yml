@@ -17,6 +17,8 @@ jobs:
 
     - name: Setup Conan Profile (Linux)
       run: |
+        apk update
+        apk add --no-cache libunwind-dev libunwind
         export CC=clang
         export CXX=clang++
         conan profile detect
