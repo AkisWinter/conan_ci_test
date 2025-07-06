@@ -27,7 +27,9 @@ jobs:
 
     - name: Conan install Linux
       run: |
-        conan install . --profile=linux64 --build=missing
+        - name: Conan install Linux
+  run: |
+        conan install . --profile=linux64 --build=missing -c tools.system.package_manager:mode=install
         cmake -DCMAKE_TOOLCHAIN_FILE=conan_toolchain.cmake -B build/linux
         cmake --build build/linux --config Release
 
